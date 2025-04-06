@@ -1452,7 +1452,7 @@ function deleteTask(id) {
             }
 
             apiRequest(`/api/tasks/delete?id=${id}`, {
-                method: 'DELETE'
+                method: 'POST'
             }, false) // 不使用全局加载动画
                 .then(result => {
                     if (result.code === 200) {
@@ -2257,7 +2257,7 @@ function deleteRecord(id) {
                         showToast('删除成功', 'success');
 
                         // 稍微延迟后重新加载记录列表，确保用户可以看到成功消息
-                        loadRecords(currentPage, pageSize, currentTaskId, false); // 重新加载记录列表，不显示全局加载动画
+                        loadRecords(currentPage, currentPageSize, currentTaskId, false); // 重新加载记录列表，不显示全局加载动画
                     } else {
                         // 恢复行的显示
                         if (recordRow) {
