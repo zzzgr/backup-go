@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">备份系统 - 登录</title>
+    <link href="assets/libs/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/libs/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/libs/sweetalert2.min.css">
+    <style>
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+        
+        main {
+            flex: 1 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+        
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+        
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+        
+        .form-signin .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        .footer {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="text-center">
+    <main>
+        <div class="form-signin">
+            <form id="login-form">
+                <img class="mb-4" src="assets/img/logo.svg" alt="备份系统" width="72" height="72">
+                <h1 class="h3 mb-3 fw-normal" id="site-name-display">备份系统</h1>
+
+                <div class="">
+                    <input type="password" class="form-control" id="system-password" placeholder="系统密码" required>
+                </div>
+                
+                <div class="alert alert-danger mt-3" id="login-error" style="display: none;">
+                    密码错误，请重试
+                </div>
+                
+                <button class="w-100 btn btn-lg btn-primary mt-3" type="submit" id="btn-login">登录</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer mt-auto py-3 bg-light text-center">
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center small">
+                <span class="text-secondary opacity-75 me-3">© <span id="current-year"></span> <span id="footer-site-name">备份系统</span></span>
+                <span class="text-secondary opacity-75" id="version-display"></span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/libs/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/sweetalert2.all.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const loginError = document.getElementById('login-error');
+            const systemPassword = document.getElementById('system-password');
+            const btnLogin = document.getElementById('btn-login');
+            
+            // 设置当前年份
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            // 获取站点信息
+            getSiteInfo();
+            
+            // 检查是否已有有效token
+            const token = localStorage.getItem('backupSystemAuth');
+            if (token) {
+                // 验证token有效性
+                fetch('/api/auth/check', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.code === 200) {
+                        window.location.href = '/';
+                    }
+                })
+                .catch(error => {
+                    console.error('验证登录状态失败:', error);
+                    localStorage.removeItem('backupSystemAuth');
+                });
+            }
+            
+            // 处理登录表单提交
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // 禁用按钮，防止重复提交
+                btnLogin.disabled = true;
+                btnLogin.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 登录中...';
+                
+                // 隐藏错误消息
+                loginError.style.display = 'none';
+                
+                // 获取密码
+                const password = systemPassword.value;
+                
+                // 发送登录请求
+                fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: password })
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.code === 200) {
+                        // 登录成功，保存token
+                        localStorage.setItem('backupSystemAuth', result.data.token);
+                        
+                        // 跳转到首页
+                        window.location.href = '/';
+                    } else {
+                        // 登录失败，显示错误消息
+                        loginError.textContent = result.msg || '密码错误，请重试';
+                        loginError.style.display = 'block';
+                        
+                        // 启用按钮
+                        btnLogin.disabled = false;
+                        btnLogin.innerHTML = '登录';
+                        
+                        // 清空密码
+                        systemPassword.value = '';
+                        systemPassword.focus();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                    // 显示错误消息
+                    loginError.textContent = '登录失败，请检查网络连接';
+                    loginError.style.display = 'block';
+                    
+                    // 启用按钮
+                    btnLogin.disabled = false;
+                    btnLogin.innerHTML = '登录';
+                });
+            });
+            
+            // 获取并更新站点信息
+            function getSiteInfo() {
+                // 匿名获取站点信息的API
+                fetch('/api/info')
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.code === 200) {
+                            // 更新站点名称和版本号
+                            updateSiteDisplay(result.data.siteName, result.data.version);
+                        } else {
+                            console.error('获取站点信息失败:', result.msg);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('获取站点信息时出错:', error);
+                    });
+            }
+
+            // 更新站点展示信息
+            function updateSiteDisplay(siteName, version) {
+                // 更新站点名称
+                if (siteName) {
+                    const siteNameDisplay = document.getElementById('site-name-display');
+                    if (siteNameDisplay) {
+                        siteNameDisplay.textContent = siteName;
+                    }
+                    
+                    // 更新页面标题
+                    const pageTitle = document.getElementById('page-title');
+                    if (pageTitle) {
+                        pageTitle.textContent = siteName + ' - 登录';
+                    }
+                    
+                    // 更新页脚
+                    const footerSiteName = document.getElementById('footer-site-name');
+                    if (footerSiteName) {
+                        footerSiteName.textContent = siteName;
+                    }
+                }
+                
+                // 更新版本号
+                if (version) {
+                    const versionDisplay = document.getElementById('version-display');
+                    if (versionDisplay) {
+                        versionDisplay.textContent = `版本: ${version}`;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

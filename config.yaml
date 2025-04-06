@@ -1,0 +1,12 @@
+# 服务器配置
+server:
+  port: 8080
+
+# 数据库配置
+database:
+  type: sqlite  # mysql或sqlite
+#  host: 127.0.0.1
+#  username: root
+#  password: root
+#  port: 3306
+#  name: backup_go

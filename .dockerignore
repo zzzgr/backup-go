@@ -1,0 +1,49 @@
+# Git相关
+.git
+.gitignore
+.github
+
+# IDE相关
+.idea
+.vscode
+*.swp
+*.swo
+
+# 构建输出
+bin
+build
+dist
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# 依赖目录
+vendor
+
+# 测试文件
+*_test.go
+*.test
+
+# 临时文件和日志
+*.log
+*.tmp
+logs/
+tmp/
+
+# 备份文件(可以选择性地排除)
+backup/
+
+# 数据文件(可以选择性地排除)
+data/
+
+# Docker相关
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# 其他
+README.md
+LICENSE
+*.md 

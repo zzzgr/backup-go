@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title id="page-title">备份系统</title>
+    <link href="assets/libs/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/libs/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/libs/sweetalert2.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="assets/img/logo2.svg" alt="Logo" class="navbar-logo me-2" width="24" height="24">
+                <span id="site-name-display">备份系统</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" id="nav-tasks">任务管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="nav-records">备份记录</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="nav-system-config">系统配置</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-6">
+        <!-- 任务管理 -->
+        <div id="tasks-panel">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>任务管理</h2>
+                <button class="btn btn-primary" id="btn-add-task">新建任务</button>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>名称</th>
+                            <th>类型</th>
+                            <th>调度</th>
+                            <th>下次执行</th>
+                            <th>状态</th>
+                            <th style="min-width: 240px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tasks-table-body">
+                        <!-- 任务列表 -->
+                    </tbody>
+                </table>
+            </div>
+            <nav>
+                <ul class="pagination justify-content-center" id="task-pagination">
+                    <!-- 任务分页 -->
+                </ul>
+            </nav>
+        </div>
+
+        <!-- 备份记录 -->
+        <div id="records-panel" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>备份记录</h2>
+                <div>
+                    <select id="filter-task" class="form-select">
+                        <option value="">所有任务</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>任务名称</th>
+                            <th>开始</th>
+                            <th>结束</th>
+                            <th>耗时</th>
+                            <th>状态</th>
+                            <th>大小</th>
+                            <th style="min-width: 240px;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="records-table-body">
+                        <!-- 记录列表 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <nav>
+                <ul class="pagination justify-content-center" id="pagination">
+                    <!-- 分页 -->
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- 系统配置 -->
+        <div id="system-config-panel" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2>系统配置</h2>
+                <button class="btn btn-primary" id="btn-save-system-config">保存配置</button>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">站点配置</h5>
+                </div>
+                <div class="card-body">
+                    <form id="site-config-form">
+                        <div class="mb-3">
+                            <label for="site-name" class="form-label">站点名称</label>
+                            <input type="text" class="form-control" id="site-name" placeholder="请输入站点名称" maxlength="12">
+                            <div class="form-text">设置站点名称将显示在页面顶部和浏览器标签页中（最多12个字符）</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="site-version" class="form-label">系统版本</label>
+                            <input type="text" class="form-control" id="site-version" readonly disabled>
+                            <div class="form-text">系统版本号由系统内置，无法手动修改</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title">登录安全</h5>
+                </div>
+                <div class="card-body">
+                    <form id="security-config-form">
+                        <div class="mb-3">
+                            <label for="system-password" class="form-label">系统密码</label>
+                            <input type="password" class="form-control" id="system-password" placeholder="设置新密码">
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm-password" class="form-label">确认密码</label>
+                            <input type="password" class="form-control" id="confirm-password" placeholder="再次输入密码">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">存储配置</h5>
+                </div>
+                <div class="card-body">
+                    <form id="storage-settings-form">
+                        <div class="mb-3">
+                            <label for="storage-type" class="form-label">存储类型</label>
+                            <select class="form-select" id="storage-type">
+                                <option value="local">本地存储</option>
+                                <option value="s3">S3存储</option>
+                            </select>
+                        </div>
+                        
+                        <!-- 本地存储配置 -->
+                        <div id="local-storage-config">
+                            <div class="mb-3">
+                                <label for="local-path" class="form-label">本地路径</label>
+                                <input type="text" class="form-control" id="local-path" placeholder="例如：/data/backups">
+                                <div class="form-text">备份文件将保存到此目录，确保目录存在且有写入权限</div>
+                            </div>
+                        </div>
+                        
+                        <!-- S3存储配置 -->
+                        <div id="s3-storage-config" style="display: none;">
+                            <div class="mb-3">
+                                <label for="s3-endpoint" class="form-label">S3端点</label>
+                                <input type="text" class="form-control" id="s3-endpoint" placeholder="例如：https://s3.amazonaws.com">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="s3-region" class="form-label">区域</label>
+                                    <input type="text" class="form-control" id="s3-region" placeholder="例如：us-east-1">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="s3-bucket" class="form-label">存储桶</label>
+                                    <input type="text" class="form-control" id="s3-bucket" placeholder="例如：my-backup-bucket">
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="s3-access-key" class="form-label">访问密钥</label>
+                                    <input type="text" class="form-control" id="s3-access-key">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="s3-secret-key" class="form-label">秘密密钥</label>
+                                    <input type="password" class="form-control" id="s3-secret-key">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 通用清理配置 -->
+                        <div class="mb-3">
+                            <label for="auto-cleanup-days" class="form-label">自动清理时间（天）</label>
+                            <div class="d-flex">
+                                <input type="number" class="form-control me-2" id="auto-cleanup-days" min="0">
+                                <button type="button" class="btn btn-outline-primary" id="btn-manual-cleanup">立即清理</button>
+                            </div>
+                            <div class="form-text">系统将自动清理指定天数之前的备份文件，设置为0表示不清理</div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-3" role="alert">
+                            <i class="bi bi-info-circle"></i> 存储配置将应用于所有新创建的备份。修改配置不会影响已存在的备份文件。
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="card-title">Webhook 通知配置</h5>
+                </div>
+                <div class="card-body">
+                    <form id="webhook-settings-form">
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="webhook-enabled">
+                            <label class="form-check-label" for="webhook-enabled">启用 Webhook 通知</label>
+                        </div>
+                        
+                        <div id="webhook-config">
+                            <div class="mb-3">
+                                <label for="webhook-url" class="form-label">Webhook URL</label>
+                                <input type="text" class="form-control" id="webhook-url" placeholder="例如：https://example.com/api/webhook?event=${event}&taskName=${taskName}">
+                                <div class="form-text">接收通知的 URL 地址，支持在URL中使用变量占位符。对于带中文参数的特殊Bot API，例如: http://example.com/bot/xxx/notify?content=任务失败</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="webhook-headers" class="form-label">请求头 (Headers)</label>
+                                <textarea class="form-control" id="webhook-headers" rows="3" placeholder="一行一个 Header，例如：&#10;Authorization: Bearer API_KEY&#10;Content-Type: application/json"></textarea>
+                                <div class="form-text">每行一个 Header，格式为 "名称: 值"</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="webhook-body" class="form-label">请求体 (RequestBody)</label>
+                                <textarea class="form-control" id="webhook-body" rows="5" placeholder='{"event":"${event}","task":"${taskName}","message":"${message}"}'></textarea>
+                                <div class="form-text">请求体内容。为空则使用 GET 请求，否则使用 POST 请求</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <h6>支持的变量占位符：</h6>
+                                <table class="table table-sm table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>占位符</th>
+                                            <th>描述</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><code>${taskName}</code></td>
+                                            <td>任务名称</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>${event}</code></td>
+                                            <td>事件类型（如：备份失败）</td>
+                                        </tr>
+                                        <tr>
+                                            <td><code>${message}</code></td>
+                                            <td>详细消息</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <button type="button" class="btn btn-primary" id="btn-test-webhook">测试 Webhook</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer text-center mt-5 py-3 bg-light">
+        <div class="container">
+            <div class="d-flex justify-content-center align-items-center small">
+                <span class="text-secondary opacity-75 me-3">© <span id="current-year"></span> <span id="footer-site-name">备份系统</span></span>
+                <span class="text-secondary opacity-75" id="version-display"></span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 任务模态框 -->
+    <div class="modal fade" id="task-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="task-modal-title">新建任务</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="task-form">
+                        <input type="hidden" id="task-id">
+                        <div class="mb-3">
+                            <label for="task-name" class="form-label">任务名称</label>
+                            <input type="text" class="form-control" id="task-name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="task-type" class="form-label">备份类型</label>
+                            <select class="form-select" id="task-type" required>
+                                <option value="database">数据库备份</option>
+                                <option value="file">文件备份</option>
+                            </select>
+                        </div>
+
+                        <!-- 数据库备份配置 -->
+                        <div id="database-config">
+                            <h5 class="mt-3">数据库配置</h5>
+                            <div class="mb-3">
+                                <label for="db-type" class="form-label">数据库类型</label>
+                                <select class="form-control" id="db-type">
+                                    <option value="mysql">MySQL</option>
+                                </select>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="db-host" class="form-label">主机</label>
+                                    <input type="text" class="form-control" id="db-host" value="">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="db-port" class="form-label">端口</label>
+                                    <input type="number" class="form-control" id="db-port" value="3306">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="db-user" class="form-label">用户名</label>
+                                    <input type="text" class="form-control" id="db-user" value="">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="db-password" class="form-label">密码</label>
+                                    <input type="password" class="form-control" id="db-password">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="db-name" class="form-label">数据库名</label>
+                                <input type="text" class="form-control" id="db-name" placeholder="输入数据库名，留空则备份所有数据库">
+                                <small class="form-text text-muted">留空或输入"all"将备份所有数据库</small>
+                            </div>
+                        </div>
+
+                        <!-- 文件备份配置 -->
+                        <div id="file-config" style="display: none;">
+                            <h5 class="mt-3">文件配置</h5>
+                            <div class="mb-3">
+                                <label for="file-paths" class="form-label">文件路径（每行一个路径）</label>
+                                <textarea class="form-control" id="file-paths" rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-3">计划配置</h5>
+                        <div class="mb-3">
+                            <label for="task-schedule" class="form-label">Cron表达式</label>
+                            <input type="text" class="form-control" id="task-schedule" value="0 0 0 2 * * *">
+                            <div id="cron-feedback" class="valid-feedback">
+                                格式正确
+                            </div>
+                            <small class="form-text text-muted">格式：秒 分 时 日 月 周，如"0 0 2 * * *"表示每天凌晨2点</small>
+                            <div class="mt-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-1 mb-1 cron-example" data-cron="0 0 0 * * *">每天0点</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-1 mb-1 cron-example" data-cron="0 */30 * * * *">每30分钟</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary me-1 mb-1 cron-example" data-cron="0 0 */6 * * *">每6小时</button>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="task-enabled" checked>
+                            <label class="form-check-label" for="task-enabled">启用任务</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-task">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 配置模态框 -->
+    <div class="modal fade" id="config-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="config-modal-title">新建配置</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="config-form">
+                        <input type="hidden" id="config-id">
+                        <div class="mb-3">
+                            <label for="config-key" class="form-label">配置键</label>
+                            <input type="text" class="form-control" id="config-key" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="config-value" class="form-label">配置值</label>
+                            <textarea class="form-control" id="config-value" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="config-description" class="form-label">配置描述</label>
+                            <input type="text" class="form-control" id="config-description">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="btn-save-config">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 记录详情模态框 -->
+    <div class="modal fade" id="record-detail-modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">备份记录详情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="record-detail-content">
+                    <!-- 记录详情内容 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录过期提示模态框 -->
+    <div class="modal fade" id="session-expired-modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">会话已过期</h5>
+                </div>
+                <div class="modal-body">
+                    <p>您的登录会话已过期，请重新登录。</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn-relogin">立即登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast 通知容器 -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container"
+        style="z-index: 1100;">
+        <!-- 通知将动态添加到这里 -->
+    </div>
+
+    <!-- 自定义加载动画容器 -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div id="loading-text" class="loading-text">加载中...</div>
+        </div>
+    </div>
+
+    <script src="assets/libs/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/sweetalert2.all.min.js"></script>
+    <script src="assets/libs/cron-validator.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html> 

@@ -1,0 +1,431 @@
+/* 自定义样式 */
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 小型表格样式 */
+.table {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    font-size: 0.875rem; /* 小号字体 */
+}
+
+.table th, .table td {
+    padding: 0.5rem; /* 减小单元格内边距 */
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* 小型按钮样式 */
+.btn {
+    font-size: 0.875rem; /* 全局小号按钮 */
+    padding: 0.25rem 0.75rem;
+}
+
+.btn-icon {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    border-radius: 0.2rem;
+    margin-right: 3px;
+}
+
+/* 小型分页器样式 */
+.pagination {
+    font-size: 0.875rem;
+}
+
+.pagination .page-link {
+    padding: 0.25rem 0.5rem;
+}
+
+.pagination .page-item {
+    margin: 0 1px;
+}
+
+/* 小型表单控件 */
+.form-control, .form-select {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.form-check-input {
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.badge {
+    font-size: 75%;
+    padding: 0.25em 0.5em;
+}
+
+/* 状态颜色 */
+.status-pending {
+    background-color: #6c757d;
+}
+
+.status-running {
+    background-color: #17a2b8;
+}
+
+.status-success {
+    background-color: #28a745;
+}
+
+.status-failed {
+    background-color: #dc3545;
+}
+
+.status-cancelled {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.status-cleaned {
+    background-color: #6610f2;
+}
+
+/* 列宽度设置 */
+.table th:nth-child(1), /* ID列 */
+.table td:nth-child(1) {
+    min-width: 40px;
+    width: 40px;
+}
+
+.table th:nth-child(2), /* 名称/任务列 */
+.table td:nth-child(2) {
+    min-width: 100px;
+}
+
+.table th:nth-child(3), /* 类型/开始时间列 */
+.table td:nth-child(3) {
+    min-width: 100px;
+}
+
+.table th:nth-child(4), /* 调度/结束时间列 */
+.table td:nth-child(4) {
+    min-width: 120px;
+}
+
+.table th:nth-child(5), /* 状态列 */
+.table td:nth-child(5) {
+    min-width: 100px;
+}
+
+/* 文件大小列 (仅备份记录表格) */
+#records-panel .table th:nth-child(6),
+#records-panel .table td:nth-child(6) {
+    min-width: 80px;
+}
+
+/* 操作列 */
+.table th:last-child,
+.table td:last-child {
+    min-width: 220px;
+    white-space: nowrap;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .btn-icon {
+        padding: 0.15rem 0.3rem;
+        font-size: 0.75rem;
+    }
+    
+    /* 操作列在小屏幕上保持固定宽度 */
+    .table th:last-child,
+    .table td:last-child {
+        min-width: 200px;
+    }
+    
+    .task-buttons-container,
+    .record-buttons-container {
+        gap: 2px;
+    }
+}
+
+/* 超小屏幕额外优化 */
+@media (max-width: 480px) {
+    .btn-icon {
+        padding: 0.1rem 0.25rem;
+        font-size: 0.7rem;
+        margin-right: 1px;
+    }
+    
+    /* 在超小屏幕上调整ID列的宽度 */
+    .table th:nth-child(1),
+    .table td:nth-child(1) {
+        min-width: 30px;
+        width: 30px;
+    }
+    
+    .table th:last-child,
+    .table td:last-child {
+        min-width: 180px;
+    }
+}
+
+/* 动画效果 */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* 卡片样式 */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+
+.card-header {
+    border-radius: 8px 8px 0 0;
+    background-color: #f8f9fa;
+}
+
+/* 模态框样式 */
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* 任务和记录按钮容器样式 */
+.task-buttons-container,
+.record-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+}
+
+/* 任务启用开关样式 */
+.form-check.form-switch {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    /*padding: 0;*/
+}
+
+.form-check.form-switch .form-check-input {
+    margin-right: 0.5rem;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.form-check.form-switch .form-check-label {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* 启用状态的开关 */
+.form-check.form-switch .form-check-input:checked {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+/* 禁用状态的开关 */
+.form-check.form-switch .form-check-input:not(:checked) {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* 启用状态背景 */
+.task-enabled .form-check-input {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+
+/* 禁用状态背景 */
+.task-disabled .form-check-input {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+
+/* 启用开关背景 */
+.form-check.task-enabled .form-check-input {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+/* 禁用开关背景 */
+.form-check.task-disabled .form-check-input {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* 移除之前的下拉菜单样式 */
+.action-dropdown,
+.action-dropdown-toggle,
+.action-dropdown-menu,
+.action-dropdown-item {
+    display: none !important;
+}
+.mt-6 {
+    margin-top: 96px;
+}
+
+/* 加载动画容器 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.4s ease;
+    opacity: 1;
+}
+
+/* 加载动画 */
+.loading-spinner {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0.25rem solid #f3f3f3;
+    border-top: 0.25rem solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* 加载内容容器 */
+.loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+/* 加载文本 */
+.loading-text {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: #333;
+}
+
+/* 旋转动画 */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 区域加载状态 */
+.section-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+/* 区域加载指示器 */
+.section-loading-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* 区域加载动画 */
+.section-loading-spinner {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0.2rem solid #f3f3f3;
+    border-top: 0.2rem solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* 当区域加载时，内容应该有轻微模糊效果 */
+.section-loading > *:not(.section-loading-indicator) {
+    filter: blur(1px);
+    transition: filter 0.3s ease;
+}
+
+/* 表格行鼠标悬停效果 */
+.table tr {
+    transition: all 0.2s ease;
+}
+
+.table tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* 记录图标效果优化 */
+.record-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    filter: saturate(90%);
+}
+
+tr:hover .record-icon {
+    opacity: 1;
+    transform: scale(1.15) rotate(5deg);
+    filter: saturate(120%) drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+}
+
+/* 导航栏logo样式 */
+.navbar-logo {
+    filter: brightness(0) invert(1); /* 将SVG转为白色 */
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover .navbar-logo {
+    transform: rotate(15deg) scale(1.1);
+    opacity: 1;
+}
