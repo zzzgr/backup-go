@@ -175,6 +175,13 @@ backup-go/
 
 贡献前请查看我们的贡献指南。
 
+## 部分截图
+![1](https://y.gtimg.cn/music/photo_new/T053M0000005LLNj21t4aG.png)
+![2](https://y.gtimg.cn/music/photo_new/T053M000001y0Vdg3xiAvF.png)
+![3](https://y.gtimg.cn/music/photo_new/T053M0000022aBIa10t4rd.png)
+![4](https://y.gtimg.cn/music/photo_new/T053M000003IexFM2kb2Dr.png)
+
+
 ## 📄 许可证 | License
 
 本项目采用 [MIT 许可证](LICENSE) 进行许可。
