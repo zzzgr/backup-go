@@ -94,8 +94,8 @@ func (s *DatabaseBackupService) Execute(task *entity.BackupTask) (*entity.Backup
 			"-u" + sourceInfo.User,
 			"-p" + sourceInfo.Password,
 			"--result-file=" + tempFilePath,
-			//"--ssl-mode=DISABLED", // 开发
-			"--ssl=0", // 打包
+			"--ssl-mode=DISABLED", // mysql
+			//"--ssl=0", // 打包 mariadb
 		}
 
 		// 判断是否为全库备份（备份所有数据库）
