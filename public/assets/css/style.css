@@ -68,6 +68,11 @@ body {
     padding: 0.25rem 0.5rem;
 }
 
+/* 修复下拉框箭头重叠问题 */
+.form-select {
+    padding-right: 2rem !important;
+}
+
 .form-check-input {
     width: 0.9rem;
     height: 0.9rem;
